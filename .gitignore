@@ -1,0 +1,13 @@
+.idea*
+*.class
+target/*
+# Package Files #
+*.jar
+*.war
+*.ear
+*.iml
+*bower_components*
+build/*
+.gradle/*
+war/*
+

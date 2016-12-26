@@ -1,0 +1,27 @@
+package com.centermat.api.io.rest;
+
+import com.centermat.api.driver.EventDriver;
+import com.centermat.api.driver.EventMatchupDriver;
+import com.centermat.api.model.Event;
+import com.centermat.api.model.EventMatchup;
+import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(value = "v1/eventMatchups")
+@Api(value = "Event Matchups", description = "Event Matchups")
+public class EventMatchupRestController extends AbstractRestController<EventMatchup> {
+
+    @Autowired
+    public EventMatchupRestController(EventMatchupDriver driver) {
+        super(driver);
+
+    }
+}
