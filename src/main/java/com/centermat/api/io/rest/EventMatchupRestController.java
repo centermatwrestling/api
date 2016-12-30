@@ -21,7 +21,12 @@ public class EventMatchupRestController extends AbstractRestController<EventMatc
 
     @Autowired
     public EventMatchupRestController(EventMatchupDriver driver) {
-        super(driver);
+        super(EventMatchup.class, driver);
 
+    }
+
+    @Override
+    public EventMatchup getExample() {
+        return EventMatchup.builder().build();
     }
 }
