@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "api/v1/eventMatchups")
-@Api(value = "Event Matchups", description = "Event Matchups")
+@Api(position = 2, description = "Event Matchup <a href='http://www.centermatwrestling.com/components/components/cmw-components/'>Web Component</a>")
 public class EventMatchupRestController extends AbstractRestController<EventMatchup> {
 
     @Autowired

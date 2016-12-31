@@ -6,6 +6,7 @@ import com.centermat.api.model.Event;
 import com.centermat.api.model.EventMatchup;
 import com.centermat.api.model.EventType;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "api/v1/events")
-@Api(value = "Events", description = "Events")
+@Api(position = 1, description = "Events <a href='http://www.centermatwrestling.com/components/components/cmw-components/'>Web Component</a>")
 public class EventRestController extends AbstractRestController<Event> {
     private final EventMatchupDriver eventMatchupDriver;
 
@@ -29,6 +30,7 @@ public class EventRestController extends AbstractRestController<Event> {
 
     }
 
+    @ApiOperation(value = "Matchups associated with Event")
     @RequestMapping(value = "{id}/matchups", method = RequestMethod.GET)
     public List<EventMatchup> getMatchups(@PathVariable UUID id) {
         return eventMatchupDriver.fetchByEventId(id);
