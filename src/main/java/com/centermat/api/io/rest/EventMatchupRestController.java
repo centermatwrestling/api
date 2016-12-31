@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "v1/eventMatchups")
+@RequestMapping(value = "api/v1/eventMatchups")
 @Api(value = "Event Matchups", description = "Event Matchups")
 public class EventMatchupRestController extends AbstractRestController<EventMatchup> {
 

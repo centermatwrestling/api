@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(value = "v1/events")
+@RequestMapping(value = "api/v1/events")
 @Api(value = "Events", description = "Events")
 public class EventRestController extends AbstractRestController<Event> {
     private final EventMatchupDriver eventMatchupDriver;

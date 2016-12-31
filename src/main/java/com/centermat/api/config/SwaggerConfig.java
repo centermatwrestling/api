@@ -17,7 +17,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.centermat.api"))
+                .apis(RequestHandlerSelectors.basePackage("com.centermat.api.io.rest"))
                 .build()
                 .apiInfo(apiInfo());
     }
@@ -29,8 +29,8 @@ public class SwaggerConfig {
                 "API TOS",
                 "Terms of service",
                 "admin@centermatwrestling.com",
-                "License of API",
-                "API license URL");
+                "Apache 2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0");
         return apiInfo;
     }
 
