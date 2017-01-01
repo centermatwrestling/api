@@ -36,4 +36,5 @@ public class Event extends BaseModel {
     private Date startDate;
     private Date endDate;
     private EventType type;
+
 }

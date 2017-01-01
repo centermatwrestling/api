@@ -4,6 +4,8 @@ import com.centermat.api.driver.EventDriver;
 import com.centermat.api.driver.EventMatchupDriver;
 import com.centermat.api.model.Event;
 import com.centermat.api.model.EventMatchup;
+import com.centermat.api.model.TeamMatchup;
+import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,11 @@ public class EventMatchupRestController extends AbstractRestController<EventMatc
 
     @Override
     public EventMatchup getExample() {
-        return EventMatchup.builder().build();
+        return EventMatchup.builder()
+                .id(UUID.randomUUID())
+                .teams(Lists.newArrayList(
+                        new TeamMatchup(UUID.randomUUID()),
+                        new TeamMatchup(UUID.randomUUID())))
+                .build();
     }
 }
