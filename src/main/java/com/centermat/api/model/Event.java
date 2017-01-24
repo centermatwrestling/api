@@ -18,13 +18,14 @@ import java.util.UUID;
 public class Event extends BaseModel {
 
     @Builder
-    public Event(UUID id, String name, String logoPath, Date startDate, Date endDate, EventType type) {
+    public Event(UUID id, String name, String logoPath, Date startDate, Date endDate, EventType type, String matchupsLink) {
         super(id);
         this.name = name;
         this.logoPath = logoPath;
         this.startDate = startDate;
         this.endDate = endDate;
         this.type = type;
+        this.matchupsLink = matchupsLink;
     }
 
     @JsonProperty(required = true)
@@ -36,5 +37,13 @@ public class Event extends BaseModel {
     private Date startDate;
     private Date endDate;
     private EventType type;
+    private String matchupsLink;
+
+    public String getMatchupsLink() {
+        if(matchupsLink == null) {
+            return getLink() + "/matchups";
+        }
+        return matchupsLink;
+    }
 
 }

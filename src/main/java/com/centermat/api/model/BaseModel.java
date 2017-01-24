@@ -9,21 +9,27 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 public abstract class BaseModel {
     protected static final String BASE_LINK = "/api/v1/";
 
     @JsonProperty(required = true)
     @ApiModelProperty(required = true, dataType = "UUID")
     protected UUID id;
+    protected String link;
+
+    public BaseModel(UUID id) {
+        this.id = id;
+    }
 
     public String getLink() {
-        return BASE_LINK + getUrlName() + "s/" + getId();
+        if(link == null) {
+            return BASE_LINK + getUrlName() + "s/" + getId();
+        }
+        return link;
     }
 
     protected String getUrlName() {
         return getClass().getSimpleName().toLowerCase();
     }
 
-    ;
 }

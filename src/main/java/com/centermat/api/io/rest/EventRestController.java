@@ -5,6 +5,7 @@ import com.centermat.api.driver.EventMatchupDriver;
 import com.centermat.api.model.Event;
 import com.centermat.api.model.EventMatchup;
 import com.centermat.api.model.EventType;
+import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,24 +23,29 @@ import java.util.UUID;
 @Api(position = 1, description = "Events <a href='http://www.centermatwrestling.com/components/components/cmw-components/'>Web Component</a>")
 public class EventRestController extends AbstractRestController<Event> {
     private final EventMatchupDriver eventMatchupDriver;
+    private final EventMatchupRestController eventMatchupRestController;
 
     @Autowired
-    public EventRestController(EventDriver driver,EventMatchupDriver eventMatchupDriver) {
+    public EventRestController(EventDriver driver, EventMatchupDriver eventMatchupDriver, EventMatchupRestController eventMatchupRestController) {
         super(Event.class, driver);
         this.eventMatchupDriver = eventMatchupDriver;
-
+        this.eventMatchupRestController = eventMatchupRestController;
     }
 
     @ApiOperation(value = "Matchups associated with Event")
     @RequestMapping(value = "{id}/matchups", method = RequestMethod.GET)
     public List<EventMatchup> getMatchups(@PathVariable UUID id) {
+        if(id.equals(example_id)) {
+            return Lists.newArrayList(eventMatchupRestController.getExample());
+        }
         return eventMatchupDriver.fetchByEventId(id);
     }
 
     @Override
     public Event getExample() {
+
         final Event event = Event.builder()
-                .id(UUID.randomUUID())
+                .id(example_id)
                 .name("Test Event")
                 .startDate(new Date())
                 .endDate(new Date())

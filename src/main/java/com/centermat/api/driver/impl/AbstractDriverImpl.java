@@ -17,4 +17,19 @@ public abstract class AbstractDriverImpl<T> implements AbstractDriver<T>{
     public T findOne(UUID id) {
         return null;
     }
+
+    @Override
+    public void delete(UUID id) {
+
+    }
+
+    @Override
+    public void post(UUID id, T t) {
+
+    }
+
+    @Override
+    public void put(T t) {
+
+    }
 }
