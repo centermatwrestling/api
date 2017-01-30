@@ -1,19 +1,18 @@
 package com.centermat.api.driver.impl;
 
+import com.centermat.api.driver.BoutDriver;
 import com.centermat.api.driver.EventDriver;
+import com.centermat.api.model.Bout;
 import com.centermat.api.model.Event;
-import com.centermat.api.repositories.EventRepository;
+import com.centermat.api.repositories.BoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
-public class EventDriverImpl extends AbstractDriverImpl<Event> implements EventDriver{
+public class BoutDriverImpl extends AbstractDriverImpl<Bout> implements BoutDriver{
 
     @Autowired
-    public EventDriverImpl(EventRepository repository) {
+    public BoutDriverImpl(BoutRepository repository) {
         super(repository);
     }
 }

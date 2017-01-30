@@ -6,18 +6,20 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.Authorization;
-import io.swagger.annotations.ResponseHeader;
-import io.swagger.annotations.SwaggerDefinition;
+import com.google.common.base.Strings;
+import io.swagger.annotations.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @CrossOrigin
-public abstract class AbstractRestController<T> {
+public abstract class AbstractRestController<T extends BaseModel> {
     protected static final UUID example_id = UUID.fromString("00000000-0000-0000-0000-000000000000");
     private static final String NAME = "";
 
@@ -49,8 +51,9 @@ public abstract class AbstractRestController<T> {
 
     @ApiOperation(value = "Collection of type")
     @RequestMapping(method = RequestMethod.GET)
-    public List<T> get(@RequestParam(required = false) String fields) {
-        return driver.fetchAll();
+    public Page<T> get(@RequestParam(required = false, defaultValue = "0") Integer page,@RequestParam(required = false, defaultValue = "100")Integer size, @RequestParam(required = false) String fields) throws IOException {
+        PageRequest pageable = new PageRequest(page,size);
+        return driver.fetchAll(pageable);
     }
 
     @ApiOperation(value = "Single instance of type")
@@ -66,15 +69,23 @@ public abstract class AbstractRestController<T> {
     }
 
     @ApiOperation(value = "Create instance of type")
-    @RequestMapping(method = RequestMethod.PUT)
-    public void put(@RequestBody T body, @RequestHeader(name = "Authorization") String jwtToken) {
-        driver.put(body);
+    @RequestMapping(method = RequestMethod.POST)
+    public UUID post(@RequestBody T body, @RequestHeader(name = "Authorization") String jwtToken) {
+        driver.post(body);
+        return body.getId();
+    }
+
+    @ApiOperation(value = "Create bulk instances of type")
+    @RequestMapping( method = RequestMethod.POST, value = "bulk")
+    public List<UUID> postBulk(@RequestBody List<T> b, @RequestHeader(name = "Authorization") String jwtToken) {
+        b.forEach(t -> driver.post(t));
+        return b.stream().map(t -> t.getId()).collect(Collectors.toList());
     }
 
     @ApiOperation(value = "Update instance of type")
-    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public void put(@PathVariable UUID id, @RequestBody T body, @RequestHeader(name = "Authorization") String jwtToken) {
-        driver.post(id,body);
+        driver.put(id,body);
     }
 
 }

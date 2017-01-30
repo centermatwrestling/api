@@ -7,6 +7,7 @@ import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
@@ -19,6 +20,7 @@ import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.Set;
 
 @RestControllerAdvice
@@ -38,7 +40,18 @@ public class RestResponseBodyAdvice<T> implements ResponseBodyAdvice<T> {
         if(Strings.isNullOrEmpty(fields)) {
             return body;
         }
-        return filter(body, fields);
+        if(body instanceof Collection) {
+            for (T t : (Collection<T>)body) {
+                filter(t,fields);
+            }
+        } if(body instanceof Page) {
+            for (T t : ((Page<T>) body).getContent()) {
+                filter(t, fields);
+            }
+        } else {
+            return filter(body, fields);
+        }
+        return body;
     }
 
     private T filter(T body, String fields) {

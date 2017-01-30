@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "api/v1/events")
-@Api(position = 1, description = "Events <a href='http://www.centermatwrestling.com/components/components/cmw-components/'>Web Component</a>")
+@Api(position = 1, tags = {"Events"},description = "<a href='http://www.centermatwrestling.com/components/components/cmw-components/'>Web Component</a>")
 public class EventRestController extends AbstractRestController<Event> {
     private final EventMatchupDriver eventMatchupDriver;
     private final EventMatchupRestController eventMatchupRestController;

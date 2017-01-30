@@ -3,18 +3,17 @@ package com.centermat.api.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
 
+@Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class Event extends BaseModel {
 
     @Builder
@@ -31,12 +30,19 @@ public class Event extends BaseModel {
     @JsonProperty(required = true)
     @ApiModelProperty(required = true)
     private String name;
+    @Column(name = "logo_path")
     private String logoPath;
+    private Integer year;
     @JsonProperty(required = true)
     @ApiModelProperty(required = true)
+    @Column(name = "start_date")
     private Date startDate;
+    @Column(name = "end_date")
     private Date endDate;
     private EventType type;
+    @ElementCollection
+    private Collection<UUID> teamIds;
+    @Transient
     private String matchupsLink;
 
     public String getMatchupsLink() {

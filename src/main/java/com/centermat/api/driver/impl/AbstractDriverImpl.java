@@ -1,35 +1,44 @@
 package com.centermat.api.driver.impl;
 
 import com.centermat.api.driver.AbstractDriver;
-import org.springframework.stereotype.Service;
+import com.centermat.api.model.BaseModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
-public abstract class AbstractDriverImpl<T> implements AbstractDriver<T>{
+public abstract class AbstractDriverImpl<T extends BaseModel> implements AbstractDriver<T>{
+
+    protected JpaRepository<T,UUID> repository;
+
+    public AbstractDriverImpl(JpaRepository<T, UUID> repository) {
+        this.repository = repository;
+    }
+
     @Override
-    public List<T> fetchAll() {
-        return new LinkedList<>();
+    public Page<T> fetchAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override
     public T findOne(UUID id) {
-        return null;
+        return repository.findOne(id);
     }
 
     @Override
     public void delete(UUID id) {
-
+        repository.delete(id);
     }
 
     @Override
-    public void post(UUID id, T t) {
-
+    public void put(UUID id, T t) {
+        repository.save(t);
     }
 
     @Override
-    public void put(T t) {
-
+    public void post(T t) {
+        t.setId(UUID.randomUUID());
+        repository.save(t);
     }
 }

@@ -4,6 +4,9 @@ import com.centermat.api.security.JwtAuthenticationRequest;
 import com.centermat.api.security.JwtAuthenticationResponse;
 import com.centermat.api.security.JwtTokenUtil;
 import com.centermat.api.security.JwtUser;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@Api(position = 1, tags = {"Authentication"}, description = " ")
 public class AuthenticationRestController {
 
     @Value("${jwt.header}")
