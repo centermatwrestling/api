@@ -16,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "api/v1/teams")
 @Api(position = 2,  tags = {"Teams"}, description = "<a href='http://www.centermatwrestling.com/components/components/cmw-components/'>Web Component</a>")
-public class TeamRestController extends AbstractRestController<Team> {
+public class TeamRestController extends AbstractCrudRestController<Team> {
     public static final String YEAR_NOTES = "Year param must be a valid 4 digit date. ie 2016-2017 would be 2017. latest as year value will return latest defined season";
     private final TeamDriver teamDriver;
 

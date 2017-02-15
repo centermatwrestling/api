@@ -2,11 +2,12 @@ package com.centermat.api.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.AttributeConverter;
-import java.io.IOException;
 import java.util.HashMap;
 
+@Slf4j
 public class JpaConverterJson implements AttributeConverter<Object, String> {
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
@@ -19,6 +20,7 @@ public class JpaConverterJson implements AttributeConverter<Object, String> {
             wrapper.put("value",objectMapper.writeValueAsString(meta));
             return objectMapper.writeValueAsString(wrapper);
         } catch (JsonProcessingException ex) {
+            log.error("Unexpected IOEx decoding json from database: ",ex);
             return null;
             // or throw an error
         }
@@ -31,10 +33,8 @@ public class JpaConverterJson implements AttributeConverter<Object, String> {
             final String value = map.get("value").toString();
             final Class clazz = Class.forName(map.get("class").toString());
             return objectMapper.readValue(value, clazz);
-        } catch (IOException ex) {
-            // logger.error("Unexpected IOEx decoding json from database: " + dbData);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            log.error("Unexpected IOEx decoding json from database: " + dbData,ex);
         }
         return null;
     }

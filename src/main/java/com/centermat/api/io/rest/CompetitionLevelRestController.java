@@ -12,13 +12,11 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "api/v1/competitionLevels")
 @Api(position = 1,tags = {"Competition Levels"}, description = "<a href='http://www.centermatwrestling.com/components/components/cmw-components/'>Web Component</a>")
-public class CompetitionLevelRestController extends AbstractRestController<CompetitionLevel> {
-    private final CompetitionLevelDriver competitionLevelDriver;
+public class CompetitionLevelRestController extends AbstractCrudRestController<CompetitionLevel> {
 
     @Autowired
     public CompetitionLevelRestController(CompetitionLevelDriver driver) {
         super(CompetitionLevel.class, driver);
-        this.competitionLevelDriver = driver;
     }
 
     @Override

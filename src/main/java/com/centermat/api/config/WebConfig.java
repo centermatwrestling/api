@@ -1,5 +1,6 @@
 package com.centermat.api.config;
 
+import com.centermat.api.io.rest.interceptors.RateLimitInterceptor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -62,5 +63,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
         mapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
         return mapper;
+    }
+
+
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        super.addInterceptors(registry);
+        registry.addInterceptor(new RateLimitInterceptor());
     }
 }
