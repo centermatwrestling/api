@@ -1,13 +1,11 @@
 package com.centermat.api.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Convert;
-import javax.persistence.Converter;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
@@ -17,7 +15,11 @@ import java.util.UUID;
 @NoArgsConstructor
 public class WrestlerRecord extends BaseModel{
 
+    @ApiModelProperty(required = true, dataType = "UUID")
+    @Column(columnDefinition = "BINARY(16)")
     private UUID wrestlerId;
+    @ApiModelProperty(required = true, dataType = "UUID")
+    @Column(columnDefinition = "BINARY(16)")
     private UUID competitionLevelId;
     @Convert(converter = JpaConverterJson.class)
     private WeightClass weightClass;

@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class Wrestler extends BaseModel{
+    @Column(columnDefinition = "BINARY(16)")
     private UUID teamId;
     @Transient
     private Team team;

@@ -1,9 +1,10 @@
-
 server:
   port: 8081
 spring:
   resources:
     static-locations: /resources/static
+  profiles:
+    active: local
 jwt:
   header: Authorization
   secret: mySecret

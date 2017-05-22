@@ -1,0 +1,20 @@
+server:
+  port: 8081
+spring:
+  resources:
+    static-locations: /resources/static
+  jpa:
+    generate-ddl: true
+  datasource:
+    url: jdbc:mysql://us-cdbr-iron-east-04.cleardb.net/heroku_31d0c284b4ce132?reconnect=true
+    username: bde875480e2586
+    password: f9697181
+    driver-class-name: com.mysql.jdbc.Driver
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 604800
+  route:
+    authentication:
+      path: auth
+      refresh: refresh

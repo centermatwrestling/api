@@ -19,7 +19,7 @@ public class CompetitionLevel extends BaseModel{
     @Column(name = "logo_path")
     private String logoPath;
     private Integer tier;
-    @Column(name = "parent_tier")
+    @Column(name = "parent_tier", columnDefinition = "BINARY(16)")
     private UUID parentTier;
 
     @Builder

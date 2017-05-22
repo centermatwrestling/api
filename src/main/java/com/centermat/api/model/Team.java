@@ -18,9 +18,9 @@ public class Team extends BaseModel{
     @Column(name = "short_name")
     private String shortName;
     private String abbr;
-    @Column(name = "conference_id")
+    @Column(name = "conference_id", columnDefinition = "BINARY(16)")
     private UUID conferenceId;
-    @Column(name = "level_of_play_id")
+    @Column(name = "level_of_play_id", columnDefinition = "BINARY(16)")
     private UUID levelOfPlayId;
     @Column(name = "primary_color")
     private String primaryColor;

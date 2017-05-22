@@ -39,6 +39,7 @@ public class Event extends BaseModel {
     private Date startDate;
     @Column(name = "end_date")
     private Date endDate;
+    @Enumerated(EnumType.STRING)
     private EventType type;
     @ElementCollection
     private Collection<UUID> teamIds;

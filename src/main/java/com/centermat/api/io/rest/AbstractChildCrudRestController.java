@@ -54,21 +54,21 @@ public abstract class AbstractChildCrudRestController<T extends BaseModel> imple
         return driver.findOne(id);
     }
 
-    public void delete(UUID parentId, UUID id, String jwtToken) {
+    public void delete(@PathVariable UUID parentId,@PathVariable UUID id, @RequestHeader(name = "Authorization") String jwtToken) {
         driver.delete(id);
     }
 
-    public UUID post(UUID parentId, T body, String jwtToken) {
+    public UUID post(@PathVariable UUID parentId,@RequestBody T body, @RequestHeader(name = "Authorization") String jwtToken) {
         driver.post(body);
         return body.getId();
     }
 
-    public List<UUID> postBulk(UUID parentId, List<T> b, String jwtToken) {
+    public List<UUID> postBulk(@PathVariable UUID parentId,@RequestBody List<T> b, @RequestHeader(name = "Authorization") String jwtToken) {
         b.forEach(t -> driver.post(t));
         return b.stream().map(t -> t.getId()).collect(Collectors.toList());
     }
 
-    public void put(UUID parentId, UUID id, T body, String jwtToken) {
+    public void put(@PathVariable UUID parentId, @PathVariable UUID id, @RequestBody T body, @RequestHeader(name = "Authorization") String jwtToken) {
         driver.put(id, body);
     }
 

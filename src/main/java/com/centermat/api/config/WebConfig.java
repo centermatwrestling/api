@@ -1,5 +1,6 @@
 package com.centermat.api.config;
 
+import com.centermat.api.config.mappings.StringToUUIDConverter;
 import com.centermat.api.io.rest.interceptors.RateLimitInterceptor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerInitializedEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.support.FormattingConversionServiceFactoryBean;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;

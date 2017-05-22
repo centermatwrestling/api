@@ -48,6 +48,6 @@ public interface ChildCrudRestController<T extends BaseModel> {
 
     @ApiOperation(value = "Update instance of type")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    void put(@PathVariable(PARENTID_NAME) UUID parentId, @PathVariable UUID id, @RequestBody T body, @RequestHeader(name = "Authorization") String jwtToken);
+    void put(@PathVariable UUID parentId, @PathVariable UUID id, @RequestBody T body, @RequestHeader(name = "Authorization") String jwtToken);
 
 }
