@@ -28,9 +28,13 @@ public interface CrudRestController<T extends BaseModel> {
     @RequestMapping(method = RequestMethod.GET)
     Page<T> get(@RequestParam(required = false, defaultValue = "0") Integer page,@RequestParam(required = false, defaultValue = "100")Integer size, @RequestParam(required = false) String fields) throws IOException;
 
+    @ApiOperation(value = "Collection of type")
+    @RequestMapping(path = "/list", method = RequestMethod.GET)
+    List<T> getList(@RequestParam(required = false, defaultValue = "0") Integer page,@RequestParam(required = false, defaultValue = "100")Integer size, @RequestParam(required = false) String fields) throws IOException;
+
     @ApiOperation(value = "Single instance of type")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    T get(@PathVariable UUID id, @RequestParam(required = false) String fields);
+    T get(@PathVariable UUID id, @RequestParam(required = false) String fields, @RequestParam(required = false) boolean loadAll);
 
     @ApiOperation(value = "Delete instance of type")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)

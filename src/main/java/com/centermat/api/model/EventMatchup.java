@@ -24,6 +24,8 @@ public class EventMatchup extends BaseModel {
     private Date endDate;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "eventMatchupId")
     private List<TeamMatchup> teams;
+    @Enumerated(EnumType.STRING)
+    private EventStatus status;
 
     @Builder
     public EventMatchup(UUID id, UUID eventId, List<TeamMatchup> teams) {

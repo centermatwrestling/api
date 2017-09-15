@@ -7,12 +7,14 @@ import com.centermat.api.model.Event;
 import com.centermat.api.model.EventMatchup;
 import com.centermat.api.repositories.BoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class BoutDriverImpl extends AbstractDriverImpl<Bout> implements BoutDriver{
+public class BoutDriverImpl extends AbstractDriverImpl<Bout, BoutRepository> implements BoutDriver{
 
     @Autowired
     public BoutDriverImpl(BoutRepository repository) {
@@ -28,5 +30,10 @@ public class BoutDriverImpl extends AbstractDriverImpl<Bout> implements BoutDriv
             boutMatchup.setEventMatchupId(bout.getEventMatchupId());
         });
         repository.save(bout);
+    }
+
+    @Override
+    public Page<Bout> fetchAll(UUID parentId, UUID parent2Id, Pageable pageable) {
+        return repository.findByEventIdAndEventMatchupId(parentId, parent2Id, pageable);
     }
 }

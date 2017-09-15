@@ -6,13 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collections;
 import java.util.UUID;
 
-public abstract class AbstractDriverImpl<T extends BaseModel> implements AbstractDriver<T>{
+public abstract class AbstractDriverImpl<T extends BaseModel, R extends JpaRepository<T, UUID>> implements AbstractDriver<T, R>{
 
-    protected JpaRepository<T,UUID> repository;
+    protected R repository;
 
-    public AbstractDriverImpl(JpaRepository<T, UUID> repository) {
+    public AbstractDriverImpl(R repository) {
         this.repository = repository;
     }
 
@@ -22,9 +23,15 @@ public abstract class AbstractDriverImpl<T extends BaseModel> implements Abstrac
     }
 
     @Override
-    public T findOne(UUID id) {
-        return repository.findOne(id);
+    public T findOne(UUID id, boolean loadAll) {
+        final T one = repository.findOne(id);
+        if(loadAll) {
+            loadAll(one);
+        }
+        return one;
     }
+
+    protected void loadAll(T one){};
 
     @Override
     public void delete(UUID id) {

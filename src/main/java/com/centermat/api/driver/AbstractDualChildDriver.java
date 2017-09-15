@@ -7,15 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface AbstractDriver<T extends BaseModel, R extends JpaRepository<T, UUID>> {
+public interface AbstractDualChildDriver<T extends BaseModel, R extends JpaRepository<T, UUID>> extends AbstractDriver<T, R> {
 
-    Page<T> fetchAll(Pageable pageable);
-
-    T findOne(UUID id, boolean loadAll);
-
-    void delete(UUID id);
-
-    void post(T t);
-
-    void put(UUID id, T t);
+    Page<T> fetchAll(UUID parentId, UUID parent2Id, Pageable pageable);
 }

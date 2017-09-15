@@ -1,5 +1,6 @@
 package com.centermat.api.io.rest;
 
+import com.centermat.api.driver.AbstractChildDriver;
 import com.centermat.api.driver.AbstractDriver;
 import com.centermat.api.model.BaseModel;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -17,14 +19,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @CrossOrigin
-public abstract class AbstractChildCrudRestController<T extends BaseModel> implements ChildCrudRestController<T> {
+public abstract class AbstractChildCrudRestController<T extends BaseModel, R extends JpaRepository<T,UUID>, D extends AbstractChildDriver<T,R>> implements ChildCrudRestController<T> {
     protected static final UUID example_id = UUID.fromString("00000000-0000-0000-0000-000000000000");
-    private static final String NAME = "";
 
-    protected AbstractDriver<T> driver;
+    protected D driver;
     protected Class<T> clazz;
 
-    public AbstractChildCrudRestController(Class<T> clazz, AbstractDriver<T> driver) {
+    public AbstractChildCrudRestController(Class<T> clazz, D driver) {
         this.clazz = clazz;
         this.driver = driver;
     }
@@ -47,11 +48,12 @@ public abstract class AbstractChildCrudRestController<T extends BaseModel> imple
     @RequestMapping(method = RequestMethod.GET)
     public Page<T> get(@PathVariable UUID parentId,@RequestParam(required = false, defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "100") Integer size, @RequestParam(required = false) String fields) throws IOException {
         PageRequest pageable = new PageRequest(page, size);
-        return driver.fetchAll(pageable);
+        return driver.fetchAll(parentId, pageable);
     }
 
-    public T get(UUID parentId, UUID id, String fields) {
-        return driver.findOne(id);
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public T get(@PathVariable UUID parentId, @PathVariable UUID id, @RequestParam(required = false) String fields,@RequestParam(required = false) boolean loadAll) {
+        return driver.findOne(id, loadAll);
     }
 
     public void delete(@PathVariable UUID parentId,@PathVariable UUID id, @RequestHeader(name = "Authorization") String jwtToken) {

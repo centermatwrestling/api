@@ -4,6 +4,7 @@ import com.centermat.api.driver.TeamDriver;
 import com.centermat.api.model.Event;
 import com.centermat.api.model.Team;
 import com.centermat.api.model.Wrestler;
+import com.centermat.api.repositories.TeamRepository;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "api/v1/teams")
 @Api(position = 2,  tags = {"Teams"}, description = "<a href='http://www.centermatwrestling.com/components/components/cmw-components/'>Web Component</a>")
-public class TeamRestController extends AbstractCrudRestController<Team> {
+public class TeamRestController extends AbstractCrudRestController<Team, TeamRepository, TeamDriver> {
     public static final String YEAR_NOTES = "Year param must be a valid 4 digit date. ie 2016-2017 would be 2017. latest as year value will return latest defined season";
     private final TeamDriver teamDriver;
 
@@ -31,7 +32,8 @@ public class TeamRestController extends AbstractCrudRestController<Team> {
     @RequestMapping(method = RequestMethod.GET, value = "{id}/schedule/{year}")
     public List<Event> schedule(@PathVariable UUID id, @PathVariable String year) {
         Preconditions.checkArgument(year.matches("\\d{4}|latest"),"Year should be a valid year");
-        return teamDriver.fetchSchedule(id, year);
+        final List<Event> events = teamDriver.fetchSchedule(id, Integer.parseInt(year));
+        return events;
     }
 
     @ApiOperation(value = "Returns roster for provided team", notes = YEAR_NOTES)

@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Data
 @MappedSuperclass
-public abstract class BaseModel {
+public abstract class BaseModel implements Comparable<BaseModel> {
     protected static final String BASE_LINK = "/api/v1/";
 
     @Id
@@ -40,4 +40,8 @@ public abstract class BaseModel {
         return getClass().getSimpleName().toLowerCase();
     }
 
+    @Override
+    public int compareTo(BaseModel o) {
+        return 0;
+    }
 }

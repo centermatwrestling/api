@@ -30,8 +30,8 @@ public class RateLimitInterceptor extends HandlerInterceptorAdapter {
         response.setHeader("X-Rate-Limit-Remaining", String.valueOf(cache.getIfPresent(request.getRemoteAddr())));
 
         if(count<=0){
-            response.sendError(429, "Too Many Requests!");
-            return false;
+//            response.sendError(429, "Too Many Requests!");
+//            return false;
         }
         return true;
     }

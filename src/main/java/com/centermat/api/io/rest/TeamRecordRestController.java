@@ -2,6 +2,7 @@ package com.centermat.api.io.rest;
 
 import com.centermat.api.driver.TeamRecordDriver;
 import com.centermat.api.model.TeamRecord;
+import com.centermat.api.repositories.TeamRecordRepository;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "api/v1/teams/{parentId}/teamRecords")
 @Api(position = 1, tags = {"Team Records"}, description = "<a href='http://www.centermatwrestling.com/components/components/cmw-components/'>Web Component</a>")
-public class TeamRecordRestController extends AbstractChildCrudRestController<TeamRecord> {
+public class TeamRecordRestController extends AbstractChildCrudRestController<TeamRecord, TeamRecordRepository, TeamRecordDriver> {
 
     @Autowired
     public TeamRecordRestController(TeamRecordDriver driver) {

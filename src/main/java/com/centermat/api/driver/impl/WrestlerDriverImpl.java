@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class WrestlerDriverImpl extends AbstractDriverImpl<Wrestler> implements WrestlerDriver{
+public class WrestlerDriverImpl extends AbstractDriverImpl<Wrestler, WrestlerRepository> implements WrestlerDriver{
 
     @Autowired
     public WrestlerDriverImpl(WrestlerRepository repository) {

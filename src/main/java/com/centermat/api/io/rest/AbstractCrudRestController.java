@@ -6,24 +6,28 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsonschema.JsonSchema;
+import com.google.common.collect.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @CrossOrigin
-public abstract class AbstractCrudRestController<T extends BaseModel> implements CrudRestController<T> {
+public abstract class AbstractCrudRestController<T extends BaseModel, R extends JpaRepository<T,UUID>, D extends AbstractDriver<T,R>> implements CrudRestController<T> {
     protected static final UUID example_id = UUID.fromString("00000000-0000-0000-0000-000000000000");
     private static final String NAME = "";
 
-    protected AbstractDriver<T> driver;
+    protected D driver;
     protected Class<T> clazz;
 
-    public AbstractCrudRestController(Class<T> clazz, AbstractDriver<T> driver) {
+    public AbstractCrudRestController(Class<T> clazz, D driver) {
         this.clazz = clazz;
         this.driver = driver;
     }
@@ -47,8 +51,16 @@ public abstract class AbstractCrudRestController<T extends BaseModel> implements
         return driver.fetchAll(pageable);
     }
 
-    public T get(@PathVariable UUID id, @RequestParam(required = false) String fields) {
-        return driver.findOne(id);
+    @Override
+    public List<T> getList(@RequestParam(required = false, defaultValue = "0") Integer page, @RequestParam(required = false, defaultValue = "100") Integer size, @RequestParam(required = false) String fields) throws IOException {
+        final List<T> content = get(page, size, fields).getContent();
+        final ArrayList<T> sorted = Lists.newArrayList(content);
+        Collections.sort(sorted);
+        return sorted;
+    }
+
+    public T get(@PathVariable UUID id, @RequestParam(required = false) String fields, @RequestParam(required = false) boolean loadAll) {
+        return driver.findOne(id, loadAll);
     }
 
     public void delete(@PathVariable UUID id, @RequestHeader(name = "Authorization") String jwtToken) {
@@ -62,7 +74,7 @@ public abstract class AbstractCrudRestController<T extends BaseModel> implements
 
     public List<UUID> postBulk(@RequestBody List<T> b, @RequestHeader(name = "Authorization") String jwtToken) {
         b.forEach(t -> driver.post(t));
-        return b.stream().map(t -> t.getId()).collect(Collectors.toList());
+        return b.stream().map(BaseModel::getId).collect(Collectors.toList());
     }
 
     public void put(@PathVariable UUID id, @RequestBody T body, @RequestHeader(name = "Authorization") String jwtToken) {

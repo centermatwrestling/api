@@ -5,6 +5,7 @@ import com.centermat.api.driver.EventMatchupDriver;
 import com.centermat.api.model.Event;
 import com.centermat.api.model.EventMatchup;
 import com.centermat.api.model.EventType;
+import com.centermat.api.repositories.EventRepository;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping(value = "api/v1/events")
 @Api(position = 1, tags = {"Events"},description = "<a href='http://www.centermatwrestling.com/components/components/cmw-components/'>Web Component</a>")
-public class EventRestController extends AbstractCrudRestController<Event> {
+public class EventRestController extends AbstractCrudRestController<Event, EventRepository, EventDriver> {
     private final EventMatchupDriver eventMatchupDriver;
     private final EventMatchupRestController eventMatchupRestController;
 
@@ -30,15 +31,6 @@ public class EventRestController extends AbstractCrudRestController<Event> {
         super(Event.class, driver);
         this.eventMatchupDriver = eventMatchupDriver;
         this.eventMatchupRestController = eventMatchupRestController;
-    }
-
-    @ApiOperation(value = "Matchups associated with Event")
-    @RequestMapping(value = "{id}/matchups", method = RequestMethod.GET)
-    public List<EventMatchup> getMatchups(@PathVariable UUID id) {
-        if(id.equals(example_id)) {
-            return Lists.newArrayList(eventMatchupRestController.getExample());
-        }
-        return eventMatchupDriver.fetchByEventId(id);
     }
 
     @Override

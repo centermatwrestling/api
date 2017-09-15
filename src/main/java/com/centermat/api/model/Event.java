@@ -1,13 +1,13 @@
 package com.centermat.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -42,15 +42,22 @@ public class Event extends BaseModel {
     @Enumerated(EnumType.STRING)
     private EventType type;
     @ElementCollection
-    private Collection<UUID> teamIds;
+    @Column(name = "teamIds")
+    private Set<UUID> teamIds;
     @Transient
     private String matchupsLink;
+    @Transient
+    private List<EventMatchup> eventMatchups;
 
     public String getMatchupsLink() {
         if(matchupsLink == null) {
-            return getLink() + "/matchups";
+            return getLink() + "/eventMatchups";
         }
         return matchupsLink;
     }
 
+    @Override
+    public int compareTo(BaseModel o) {
+        return startDate.compareTo(((Event)o).getStartDate());
+    }
 }
